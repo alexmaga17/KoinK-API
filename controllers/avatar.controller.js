@@ -7,6 +7,7 @@ exports.create = async (req, res) => {
     const avatar = new Avatar({
         name: req.body.name,
         image: req.body.image,
+        price:req.body.price,
         unlockedAt: req.body.unlockedAt
     });
 

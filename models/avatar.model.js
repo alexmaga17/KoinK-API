@@ -3,6 +3,7 @@ module.exports = (mongoose) => {
             {
                 name:{type: 'string',required: true},
                 image:{type: 'string',required: true},
+                price:{type: 'number',required: true},
                 unlockedAt:{type: 'number',required: true}
             },
             { timestamps: false }
