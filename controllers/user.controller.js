@@ -175,11 +175,10 @@ exports.login = async (req, res) => {
     try{
         if (!req.body || !req.body.username || !req.body.password)
             return res.status(400).json({ success: false, msg: "Must provide username and password." });
-        
         const user = await User
         .findOne({ username: req.body.username})
         .exec();
-        //console.log(user);
+        console.log(user);
 
         if (!user) return res.status(404).json({ success: false, msg: "User not found." });   
         
