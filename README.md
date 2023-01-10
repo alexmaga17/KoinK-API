@@ -1,1 +1,2 @@
-# Rest API for SomeHelpingHands project (2nd year, TSIW course, ESMAD-IPP)
+# KoinK Rest API
+## REst API for Android APP "KoinK" TSIW Course , 3rd year
