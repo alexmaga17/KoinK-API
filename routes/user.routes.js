@@ -16,6 +16,9 @@ router.route('/login')
 
 router.route('/:userID') 
     .get(/*authController.verifyToken,*/ userController.findByID)
+
+router.route('/:userID/avatars/:avatarID')
+    .put(userController.buyAvatar);    
  
 router.all('*', function (req, res) {
     //send an predefined error message 

@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs"); //password encryption
 const config = require("../config/db.config.js");
 const db = require("../models");
 const User = db.users;
+const Avatar = db.avatars;
 
 //Create a new user
 exports.create = async (req, res) => {
@@ -170,6 +171,45 @@ exports.findByID = async (req, res) => {
 
 //     }
 // };
+exports.buyAvatar = async (req, res) => {
+    try {
+        if (req.loggedUserId !== req.params.userID) {
+            return res.status(403).json({
+                success: false, msg: "Esta solicitação está disponível apenas para o proprio utilizador"
+            });
+        }
+
+        const avatar = await Avatar.findById(req.params.avatarID)
+            .exec();
+
+        if (avatar === null) {
+            return res.status(404).json({
+                success: false, msg: `Não é possível encontrar nenhum filme com ID ${req.params.avatarID}.`
+            });
+        }
+
+        const user = await User.findById(req.params.userID)
+            .exec();
+
+
+        if (user === null)
+            return res.status(404).json({
+                success: false, msg: `Não é possível encontrar nenhum utilizador com ID ${req.params.userID}.`
+            });
+
+        user.inventory.avatars.push(avatar)
+        await user.save()
+
+        res.status(200).json({
+            message: `Avatar comprado com sucesso!`
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false, msg: `Erro ao recuperar o utilizador com ID ${req.params.userID}.`
+        });
+    }
+};
 
 exports.login = async (req, res) => {
     try{
