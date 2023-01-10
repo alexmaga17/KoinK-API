@@ -10,7 +10,7 @@ router.route('/')
     .post(avatarController.create);
 
 router.route('/:id')
-    // .get(avatarController.findById)
+     .get(avatarController.findById)
     // .put(missionController.update)
     // .delete(missionController.delete);
 

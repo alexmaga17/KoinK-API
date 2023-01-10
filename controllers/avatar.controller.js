@@ -52,22 +52,22 @@ exports.findAll = async (req, res) => {
     }
 };
 
-// //Encontrar categoria por nome
-// exports.findById = async (req, res) => {
-//     try {
-//         let data = await Mission
-//             .find({ missin: req.params.id})
-//             .exec(); 
-//         res.status(200).json(data);
-//     }
-//     catch (err) {
-//         res.status(500).json({
-//             message:
-//                 err.message || "Some error occurred while retrieving that category"
-//         });
+//Encontrar avatar por id
+exports.findById = async (req, res) => {
+    try {
+        let data = await Avatar
+            .find({ _id: req.params.id})
+            .exec(); 
+        res.status(200).json(data);
+    }
+    catch (err) {
+        res.status(500).json({
+            message:
+                err.message || "Some error occurred while retrieving that category"
+        });
 
-//     }
-// };
+    }
+};
 
 // //Atualizar informação de categoria
 // exports.update = async (req, res) => {
