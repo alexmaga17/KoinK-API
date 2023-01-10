@@ -13,16 +13,41 @@ exports.create = async (req, res) => {
         email: req.body.email,
         curr_avatar:"",
         inventory:{
-            "avatars":"",
-            "boosters":""
+            avatars:[],
+            boosters:[]
+        },
+        level:{
+            number:1,
+            experience:0
         },
         stats:{
-            "minigames":{
-                "rocketpig":0,
-                "pigzz":0
+            highScores:{
+                rocketpig:0,
+                pigzz:0
             }
         },
-        missions:[],
+        missions:[
+            {
+                id_mission:'63b7edce8f887d6b9b3cf6e2',
+                progress:0,
+                completed:false
+            },
+            {
+                id_mission:'63b7edce8f887d6b9b3cf6e3',
+                progress:0,
+                completed:false
+            },
+            {
+                id_mission:'63b7edce8f887d6b9b3cf6e4',
+                progress:0,
+                completed:false
+            },
+            {
+                id_mission:'63b7edce8f887d6b9b3cf6e5',
+                progress:0,
+                completed:false
+            }
+        ],
         coins:0,
         ranking:0,
         lives:4,
@@ -152,9 +177,9 @@ exports.login = async (req, res) => {
             return res.status(400).json({ success: false, msg: "Must provide username and password." });
         
         const user = await User
-        .findOne({ email: req.body.email})
+        .findOne({ username: req.body.username})
         .exec();
-        console.log(user);
+        //console.log(user);
 
         if (!user) return res.status(404).json({ success: false, msg: "User not found." });   
         

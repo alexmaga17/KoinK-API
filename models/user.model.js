@@ -8,12 +8,7 @@ module.exports = (mongoose) => {
                 inventory:{},
                 level:{},
                 stats:{},
-                missions:[
-                    {
-                        mission:{ type: mongoose.Types.ObjectId, ref:'Mission'},
-                        progress:{ type: 'string'}
-                    }
-                ],
+                missions:{type:'array', default:[]},
                 coins:{type: 'number'},
                 ranking:{type: 'number'},
                 lives:{type: 'number', min:0, max: 4},
