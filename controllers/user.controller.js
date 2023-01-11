@@ -12,21 +12,6 @@ exports.create = async (req, res) => {
     const user = new User({
         username: req.body.username,
         email: req.body.email,
-        curr_avatar:"",
-        inventory:{
-            avatars:[],
-            boosters:[]
-        },
-        level:{
-            number:1,
-            experience:0
-        },
-        stats:{
-            highScores:{
-                rocketpig:0,
-                pigzz:0
-            }
-        },
         missions:[
             {
                 id_mission:'63b7edce8f887d6b9b3cf6e2',
@@ -49,10 +34,6 @@ exports.create = async (req, res) => {
                 completed:false
             }
         ],
-        coins:0,
-        ranking:0,
-        lives:4,
-        sound:true,
         password:bcrypt.hashSync(req.body.password,10),
     });
     try {
@@ -118,32 +99,41 @@ exports.findByID = async (req, res) => {
 
 
 // // Atualizar informação de algum utilizador
-// exports.update = async (req, res) => {
-//     try{
-//         const user = await User.findById(req.params.userID).exec();
-//         if(req.params.userID != req.loggedUserId){
-//             return res.status(404).json({
-//                 success: false, msg: `Cannot update other users.`
-//             });
-//         }else{
-//             if(!req.body.password)
-//             return res.status(404).json({
-//                 success: false, msg: `You have to provide a new password!`
-//             });
-//             else{
-//                 Object.assign(user, bcrypt.hashSync(req.body.password,10));
-//                 user.save();
-//                 res.send({data:user});
-//             }
-//         }
-//     }catch(err) {
-//         res.status(500).json({
-//             message:
-//                 err.message || "Some error occurred while updating user."
-//         });
+exports.update = async (req, res) => {
+    // validate request body data
 
-//     }
-// };
+    if (!req.body) {
+        res.status(400).json({ message: "O corpo da solicitação não pode estar vazio!" });
+        return;
+    }
+    if (req.loggedUserId !== req.params.userID) {
+        //console.log(req.loggedUserId);
+        return res.status(403).json({
+            success: false, msg: "Esta solicitação está disponível apenas para o proprio utilizador"
+        });
+    }
+    try {
+        const user = await User.findByIdAndUpdate(req.params.userID, req.body,
+            {
+                returnOriginal: false,
+                runValidators: true,
+                useFindAndModify: false
+            }
+        ).exec();
+
+        if (!user)
+            return res.status(404).json({
+                message: `Não é possível atualizar o usuário com id=${req.params.userID}.`
+            });
+        res.status(200).json({
+            message: `User com id=${req.params.userID} foi atualizado com sucesso.`
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: `Erro ao atualizar o user com id=${req.params.userID}.`
+        });
+    };
+}
 
 // Apagar um utilizador
 // exports.delete = async (req, res) => {
@@ -174,6 +164,7 @@ exports.findByID = async (req, res) => {
 exports.buyAvatar = async (req, res) => {
     try {
         if (req.loggedUserId !== req.params.userID) {
+            console.log(req.loggedUserId);
             return res.status(403).json({
                 success: false, msg: "Esta solicitação está disponível apenas para o proprio utilizador"
             });
@@ -201,7 +192,7 @@ exports.buyAvatar = async (req, res) => {
         await user.save()
 
         res.status(200).json({
-            message: `Avatar comprado com sucesso!`
+            message: `Avatar comprado com sucesso! ${user.inventory.avatars}`
         });
     }
     catch (err) {

@@ -16,6 +16,7 @@ router.route('/login')
 
 router.route('/:userID') 
     .get(/*authController.verifyToken,*/ userController.findByID)
+    .put(authController.verifyToken, userController.update);
 
 router.route('/:userID/avatars/:avatarID')
     .put(authController.verifyToken, userController.buyAvatar);    

@@ -4,15 +4,26 @@ module.exports = (mongoose) => {
                 username:{ type: 'string', required: true},
                 email:{ type: 'string', required:true},
                 password:{ type: 'string', required:true},
-                curr_avatar:{ type: 'string'},
-                inventory:{},
-                level:{},
-                stats:{},
+                curr_avatar:{ type: 'string', default:""},
+                inventory:{
+                    avatars:{ type: 'array', default:[]},
+                    boosters:{ type: 'array', default:[]}
+                },
+                level:{
+                    number:{ type: 'number', default:1},
+                    experience:{ type: 'number', default:0}
+                },
+                stats:{
+                    highscores:{
+                        rocketpig:{ type: 'number', default:0},
+                        pigzz:{ type: 'number', default:0}
+                    }
+                },
                 missions:{type:'array', default:[]},
-                coins:{type: 'number'},
-                ranking:{type: 'number'},
-                lives:{type: 'number', min:0, max: 4},
-                sound:{type: 'boolean'},
+                coins:{type: 'number', default:0},
+                ranking:{type: 'number',default:1},
+                lives:{type: 'number', min:0, max: 4, default:4},
+                sound:{type: 'boolean', default:true},
             }
         );
     // creates a new model Tutorial using the defined schema above
