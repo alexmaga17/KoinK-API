@@ -1,3 +1,9 @@
+/**
+ * @typedef Quizz
+ * @property {string} title.required
+ * @property {array} questions.required
+ */
+
 module.exports = (mongoose) => {
     const schema = mongoose.Schema(
             {

@@ -1,3 +1,19 @@
+/**
+ * @typedef User
+ * @property {string} username.required
+ * @property {string} email.required
+ * @property {string} password.required
+ * @property {string} curr_avatar
+ * @property {object} inventory
+ * @property {object} level
+ * @property {object} stats
+ * @property {array} missions
+ * @property {number} coins
+ * @property {number} ranking
+ * @property {number} lives
+ * @property {boolean} sound
+ */
+
 module.exports = (mongoose) => {
     const schema = mongoose.Schema(
             {

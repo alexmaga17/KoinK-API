@@ -98,7 +98,7 @@ exports.findByID = async (req, res) => {
 };
 
 
-// // Atualizar informação de algum utilizador
+// Atualizar informação de algum utilizador
 exports.update = async (req, res) => {
     // validate request body data
 
@@ -136,37 +136,36 @@ exports.update = async (req, res) => {
 }
 
 // Apagar um utilizador
-// exports.delete = async (req, res) => {
-//     try{
-//         if(req.loggedUserType != "admin")
-//         return res.status(403).json({success: false, msg: "Requires ADMIN role"});
-
-//         const user =  await User.findById(req.params.userID)
-//         .exec();
-//         if (user === null){
-//             return res.status(404).json({
-//                 success: false, msg: `Cannot find any user with ID ${req.params.userID}.`
-//             });
+exports.delete = async (req, res) => {
+    try{
+        const user =  await User.findById(req.params.userID)
+        .exec();
+        if (user === null){
+            return res.status(404).json({
+                success: false, msg: `Não foi encontrado nenhum utilizador com o ID ${req.params.userID}.`
+            });
         
-//         }else{
-//             await User.deleteOne({_id:req.params.userID}).exec();
-//             res.status(200).json({success: true, msg: `User with ID ${req.params.userID} succesfully removed.`});
-//         }
-//     }
-//     catch (err) {
-//         res.status(500).json({
-//             message:
-//                 err.message || "Some error occurred while deleting post."
-//         });
+        }else{
+            await User.deleteOne({_id:req.params.userID}).exec();
+            res.status(200).json({success: true, msg: `Utilizador com ID ${req.params.userID} removido.`});
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message:
+                err.message || "Ocorreu um erro ao eliminar este utilizador."
+        });
 
-//     }
-// };
+    }
+};
+
+//Adicionar um avatar ao inventário
 exports.buyAvatar = async (req, res) => {
     try {
         if (req.loggedUserId !== req.params.userID) {
             console.log(req.loggedUserId);
             return res.status(403).json({
-                success: false, msg: "Esta solicitação está disponível apenas para o proprio utilizador"
+                success: false, msg: "Este pedido está disponível apenas para o proprio utilizador"
             });
         }
 
@@ -175,7 +174,7 @@ exports.buyAvatar = async (req, res) => {
 
         if (avatar === null) {
             return res.status(404).json({
-                success: false, msg: `Não é possível encontrar nenhum filme com ID ${req.params.avatarID}.`
+                success: false, msg: `Não é possível encontrar nenhum avatar com ID ${req.params.avatarID}.`
             });
         }
 
@@ -202,6 +201,7 @@ exports.buyAvatar = async (req, res) => {
     }
 };
 
+//Fazer login
 exports.login = async (req, res) => {
     try{
         if (!req.body || !req.body.username || !req.body.password)
@@ -241,65 +241,5 @@ exports.login = async (req, res) => {
     }
 };
 
-// exports.sendMessage = async (req, res) => {
-
-//     const user1 = await User.findById(req.loggedUserId);
-//     const user2 = await User.findById(req.params.userID);
-
-//     const chat_exists  = user1.chats.some((chat) => chat.user._id.toString() == req.params.userID.toString());
-//     console.log(chat_exists);
-
-//     try {
-
-//         if(chat_exists == true){
-//             const senderChat = user1.chats.find((chat) => chat.user._id.toString() == req.params.userID.toString());
-
-//             senderChat.messages.push({
-//                 type:'sent',
-//                 message:req.body.message,
-//                 time: new Date()
-//             });
-
-
-//             const receiverChat = user2.chats.find((chat) => chat.user._id.toString() == req.loggedUserId.toString());
-
-//             receiverChat.messages.push({
-//                 type:'received',
-//                 message:req.body.message,
-//                 time: new Date()
-//             });
-
-//             await user1.save();
-//             await user2.save();
-
-//         }else if(chat_exists == false){
-
-//             let messageReceive = await User.findOneAndUpdate({_id:req.params.userID},
-//                 {$push:{ chats: {
-//                     user:user1,
-//                     messages: {type:'received',
-//                         message:req.body.message,
-//                         time: new Date()
-//                     },
-//             }}});
-
-//             let messageSend = await User.findOneAndUpdate({_id:req.loggedUserId},
-//                 {$push:{ chats: {
-//                     user:user2,
-//                     messages: {type:'sent',
-//                         message:req.body.message,
-//                         time: new Date()
-//                     },
-//             }}});
-//         }             
-//        // on success, send the post data
-//         res.json({ success: true, message: user1 });
-//     }
-//     catch (err) {
-//         res.status(500).json({
-//             success: false, msg: `Error retrieving user with ID ${req.params.userID}.` 
-//         });
-//     }
-// }
 
 

@@ -1,3 +1,10 @@
+/**
+ * @typedef Mission
+ * @property {string} description.required
+ * @property {string} goal.required
+ * @property {string} reward.required
+ */
+
 module.exports = (mongoose) => {
     const schema = mongoose.Schema(
             {

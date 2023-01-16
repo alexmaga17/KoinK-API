@@ -10,6 +10,10 @@ const port = process.env.PORT;
 //     origin: "http://localhost:8080"
 // };
 
+const expressSwagger = require('express-swagger-generator')(app); 
+const options = require('./swagger_conf'); 
+expressSwagger(options); 
+
 app.use(cors());
 app.use(express.json());
 // root route -- /api/

@@ -1,3 +1,12 @@
+/**
+ * @typedef Avatar
+ * @property {string} name.required
+ * @property {string} image.required
+ * @property {number} price.required
+ * @property {number} unlockedAt.required
+ */
+
+
 module.exports = (mongoose) => {
     const schema = mongoose.Schema(
             {
