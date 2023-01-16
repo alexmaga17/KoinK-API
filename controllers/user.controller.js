@@ -14,22 +14,30 @@ exports.create = async (req, res) => {
         email: req.body.email,
         missions:[
             {
-                id_mission:'63b7edce8f887d6b9b3cf6e2',
+                description:"Ganha 100 coins",
+                goal:100,
+                reward:50,
                 progress:0,
                 completed:false
             },
             {
-                id_mission:'63b7edce8f887d6b9b3cf6e3',
+                description:"Joga o RocketPig",
+                goal:1,
+                reward:25,
                 progress:0,
                 completed:false
             },
             {
-                id_mission:'63b7edce8f887d6b9b3cf6e4',
+                description:"Joga o Pigzz",
+                goal:1,
+                reward:25,
                 progress:0,
                 completed:false
             },
             {
-                id_mission:'63b7edce8f887d6b9b3cf6e5',
+                description:"Joga o Monopólio",
+                goal:1,
+                reward:25,
                 progress:0,
                 completed:false
             }
