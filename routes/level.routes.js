@@ -7,10 +7,7 @@ let router = express.Router();
 
 router.route('/')
     .get(levelController.findAll)
-    .post(alevelontroller.create);
-
-router.route('/:id')
-     .get(levelController.findById)
+    .post(levelController.create);
 
 router.all('*', function (req, res) {
     //send an predefined error message 

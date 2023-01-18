@@ -32,13 +32,10 @@ exports.create = async (req, res) => {
 
 // Receber todos os níveis
 exports.findAll = async (req, res) => {
-    const id = req.query.id;
-
-    let condition = id ? { id: new RegExp(id, 'i') } : {};
 
     try {
         let data = await Level
-            .find(condition)
+            .find({})
             .exec();
         res.status(200).json({success: true, levels: data});
     }
