@@ -26,6 +26,7 @@ app.use('/users', require('./routes/user.routes.js'))
 app.use('/quizzes', require('./routes/quizz.routes.js'))
 app.use('/missions', require('./routes/mission.routes.js'))
 app.use('/avatars', require('./routes/avatar.routes.js'))
+app.use('/levels', require('./routes/level.routes.js'))
 
 
 // handle invalid routes
