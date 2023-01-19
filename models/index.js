@@ -25,6 +25,7 @@ db.users = require("./user.model.js")(mongoose);
 db.missions = require("./mission.model.js")(mongoose);
 db.quizzes = require("./quizz.model.js")(mongoose);
 db.avatars = require("./avatar.model.js")(mongoose);
+db.boosters = require("./booster.model.js")(mongoose);
 db.levels = require("./level.model.js")(mongoose);
 
 module.exports = db;
