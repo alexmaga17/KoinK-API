@@ -5,6 +5,7 @@ const config = require("../config/db.config.js");
 const db = require("../models");
 const User = db.users;
 const Avatar = db.avatars;
+const Booster =  db.boosters;
 
 //Create a new user
 exports.create = async (req, res) => {
@@ -209,6 +210,47 @@ exports.buyAvatar = async (req, res) => {
     }
 };
 
+//Adicionar um booster ao inventário
+exports.buyBooster = async (req, res) => {
+    try {
+        if (req.loggedUserId !== req.params.userID) {
+            console.log(req.loggedUserId);
+            return res.status(403).json({
+                success: false, msg: "Este pedido está disponível apenas para o proprio utilizador"
+            });
+        }
+
+        const booster = await Booster.findById(req.params.boosterID)
+            .exec();
+
+        if (booster === null) {
+            return res.status(404).json({
+                success: false, msg: `Não é possível encontrar nenhum avatar com ID ${req.params.boosterID}.`
+            });
+        }
+
+        const user = await User.findById(req.params.userID)
+            .exec();
+
+
+        if (user === null)
+            return res.status(404).json({
+                success: false, msg: `Não é possível encontrar nenhum utilizador com ID ${req.params.userID}.`
+            });
+
+        user.inventory.boosters.push(booster)
+        await user.save()
+
+        res.status(200).json({
+            message: `Avatar comprado com sucesso! ${user.inventory.boosters}`
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false, msg: `Erro ao recuperar o utilizador com ID ${req.params.userID}.`
+        });
+    }
+};
 //Fazer login
 exports.login = async (req, res) => {
     try{

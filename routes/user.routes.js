@@ -90,6 +90,9 @@ router.route('/:userID')
 
 router.route('/:userID/avatars/:avatarID')
     .put(authController.verifyToken, userController.buyAvatar);    
+
+    router.route('/:userID/boosters/:avatarID')
+    .put(authController.verifyToken, userController.buyBooster);  
  
 router.all('*', function (req, res) {
     //send an predefined error message 
