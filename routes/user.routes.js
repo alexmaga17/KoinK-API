@@ -91,7 +91,7 @@ router.route('/:userID')
 router.route('/:userID/avatars/:avatarID')
     .put(authController.verifyToken, userController.buyAvatar);    
 
-    router.route('/:userID/boosters/:avatarID')
+    router.route('/:userID/boosters/:boosterID')
     .put(authController.verifyToken, userController.buyBooster);  
  
 router.all('*', function (req, res) {
