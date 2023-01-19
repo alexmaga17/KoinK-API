@@ -46,9 +46,9 @@ exports.create = async (req, res) => {
     });
     try {
         if( await User.findOne({email:req.body.email}) || await User.findOne({username:req.body.username}) ){
-            return res.status(403).json({success: false, msg: "Utilizador já a ser utilizado"})
-        }else if(req.body.password.length < 8 || req.body.password.length > 16){
-            return res.status(403).json({success: false, msg: "Palavra passe muito curta/comprida"})
+            return res.status(403).json({success: false, msg: "Esse utilizador já está registado!"})
+        }else if(req.body.password.length < 8 ){
+            return res.status(403).json({success: false, msg: "Palavra passe muito curta!"})
         }else{
             await user.save();
             res.status(201).json({ success: true, msg: "New user created.", URL: `/users/${user._id}` });
@@ -64,7 +64,7 @@ exports.create = async (req, res) => {
         }
         else
             res.status(500).json({
-                success: false, msg: err.message || "Ocorreu um erro ao criar este utilizador"
+                success: false, msg: err.message || "Ocorreu um erro ao criar este utilizador!"
             });
     }
 
@@ -213,16 +213,16 @@ exports.buyAvatar = async (req, res) => {
 exports.login = async (req, res) => {
     try{
         if (!req.body || !req.body.username || !req.body.password)
-            return res.status(400).json({ success: false, msg: "Must provide username and password." });
+            return res.status(400).json({ success: false, msg: "Preenche todos oso campos!" });
         const user = await User
         .findOne({ username: req.body.username})
         .exec();
         console.log(user);
 
-        if (!user) return res.status(404).json({ success: false, msg: "User not found." });   
+        if (!user) return res.status(404).json({ success: false, msg: "Utilizador não encontrado!." });   
         
         const check = bcrypt.compareSync( req.body.password, user.password );
-        if (!check) return res.status(401).json({ success:false, accessToken:null, msg:"Invalid credentials!" });
+        if (!check) return res.status(401).json({ success:false, accessToken:null, msg:"Credenciais erradas!" });
 
         const token = jwt.sign({ id: user._id, username:user.username },
             config.SECRET, { expiresIn: '24h' // 24 hours
@@ -244,7 +244,7 @@ exports.login = async (req, res) => {
         }
         else
             res.status(500).json({
-                success: false, msg: err.message || "Some error occurred while loggin in."
+                success: false, msg: err.message || "Ocorreu um erro ao fazer login."
             });
     }
 };
