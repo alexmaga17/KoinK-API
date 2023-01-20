@@ -122,10 +122,6 @@ exports.update = async (req, res) => {
         });
     }
     try {
-        if(req.body.password){
-            Object.assign(user, bcrypt.hashSync(req.body.password,10));
-            user.save();
-        }
         const user = await User.findByIdAndUpdate(req.params.userID, req.body,
             {
                 returnOriginal: false,
