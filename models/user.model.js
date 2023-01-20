@@ -20,7 +20,7 @@ module.exports = (mongoose) => {
                 username:{ type: 'string', required: true},
                 email:{ type: 'string', required:true},
                 password:{ type: 'string', required:true},
-                curr_avatar:{ type: 'string', default:""},
+                curr_avatar:{ type: 'string', default:"https://sonaligl.sirv.com/Images/avatars/13.svg"},
                 inventory:{
                     avatars:{ type: 'array', default:[]},
                     boosters:{ type: 'array', default:[]}

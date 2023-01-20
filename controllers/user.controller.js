@@ -281,7 +281,7 @@ exports.buyBooster = async (req, res) => {
 exports.login = async (req, res) => {
     try{
         if (!req.body || !req.body.username || !req.body.password)
-            return res.status(400).json({ success: false, msg: "Preenche todos oso campos!" });
+            return res.status(400).json({ success: false, msg: "Preenche todos so campos!" });
         const user = await User
         .findOne({ username: req.body.username})
         .exec();
