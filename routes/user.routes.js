@@ -89,7 +89,10 @@ router.route('/:userID')
   */ 
 
 router.route('/:userID/avatars/:avatarID')
-    .put(authController.verifyToken, userController.buyAvatar);    
+    .put(authController.verifyToken, userController.buyAvatar);
+    
+router.route('password/:userID')
+    .put(authController.verifyToken, userController.updatePasword); 
 
 router.route('/:userID/boosters/:boosterID')
     .put(authController.verifyToken, userController.buyBooster);  

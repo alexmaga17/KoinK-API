@@ -122,6 +122,10 @@ exports.update = async (req, res) => {
         });
     }
     try {
+        if(req.body.password){
+            Object.assign(user, bcrypt.hashSync(req.body.password,10));
+            user.save();
+        }
         const user = await User.findByIdAndUpdate(req.params.userID, req.body,
             {
                 returnOriginal: false,
@@ -143,6 +147,32 @@ exports.update = async (req, res) => {
         });
     };
 }
+exports.updatePasword = async (req, res) => {
+    try{
+        const user = await User.findById(req.params.userID).exec();
+        if(req.params.userID != req.loggedUserId){
+            return res.status(404).json({
+                success: false, msg: `Cannot update other users.`
+            });
+        }else{
+            if(!req.body.password)
+            return res.status(404).json({
+                success: false, msg: `You have to provide a new password!`
+            });
+            else{
+                Object.assign(user, bcrypt.hashSync(req.body.password,10));
+                user.save();
+                res.send({data:user});
+            }
+        }
+    }catch(err) {
+        res.status(500).json({
+            message:
+                err.message || "Some error occurred while updating user."
+        });
+
+    }
+};
 
 // Apagar um utilizador
 exports.delete = async (req, res) => {
