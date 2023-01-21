@@ -1,5 +1,6 @@
 const express = require('express');
 const missionController = require("../controllers/mission.controller.js");
+const authController = require("../controllers/auth.controller.js");
 
 // express router
 let router = express.Router();
@@ -26,18 +27,38 @@ router.route('/')
 
 /**
  * @route GET /missions/{id}
- * @group Users
- * @param {string} id.path - id
+ * @group Missions
+ * @param {string} mission.path - id
  * @returns {object} 200 - An array of a specific mission info
  * @returns {Error} 400 - Unexpected error
  * @returns {Error} 401 - Invalid Token
  * @security Bearer
-  */       
+  */ 
+ 
+/**
+ * @route PUT /missions/{missionID}
+ * @group Missions
+ * @param {string} missionID.path - missionID
+ * @returns {object} 200 - An array of a specific mission info
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 401 - Invalid Token
+ * @security Bearer
+  */ 
 
-router.route('/:id')
+/**
+ * @route DELETE /missions/{missionID}
+ * @group Missions
+ * @param {string} missionID.path - missionID
+ * @returns {object} 200 - Mission removed with success
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 401 - Invalid Token
+ * @security Bearer
+  */  
+
+router.route('/:missionID')
     .get(missionController.findById)
-    // .put(missionController.update)
-    // .delete(missionController.delete);
+    .put(authController.verifyToken, missionController.update)
+    .delete(authController.verifyToken, missionController.delete);
 
 router.all('*', function (req, res) {
     //send an predefined error message 

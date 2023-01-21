@@ -56,7 +56,7 @@ exports.findAll = async (req, res) => {
 exports.findById = async (req, res) => {
     try {
         let data = await Avatar
-            .find({ _id: req.params.id})
+            .find({ _id: req.params.avatarID})
             .exec(); 
         res.status(200).json(data);
     }
@@ -69,12 +69,54 @@ exports.findById = async (req, res) => {
     }
 };
 
-// //Atualizar informação de categoria
-// exports.update = async (req, res) => {
-//     res.status(200).json({success: true, msg:'SUCESSO'});
-// };
+exports.update = async (req, res) => {
 
-// //Apagar uma categoria
-// exports.delete = async (req, res) => {
-//     res.status(200).json({success: true, msg:'SUCESSO'});
-// };
+    if (!req.body) {
+        res.status(400).json({ message: "O corpo da solicitação não pode estar vazio!" });
+        return;
+    }
+    try {
+        const avatar = await Avatar.findByIdAndUpdate(req.params.avatarID, req.body,
+            {
+                returnOriginal: false,
+                runValidators: true,
+                useFindAndModify: false
+            }
+        ).exec();
+
+        if (!avatar)
+            return res.status(404).json({
+                message: `Não é possível atualizar o usuário com id=${req.params.avatarID}.`
+            });
+        res.status(200).json({
+            message: `Quizz com id=${req.params.avatarID} foi atualizado com sucesso.`
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: `Erro ao atualizar o quizz com id=${req.params.avatarID}.`
+        });
+    };
+};
+
+exports.delete = async (req, res) => {
+    try{
+        const avatar =  await Avatar.findById(req.params.avatarID)
+        .exec();
+        if (avatar === null){
+            return res.status(404).json({
+                success: false, msg: `Não foi encontrado nenhum avatar com o ID ${req.params.avatarID}.`
+            });
+        
+        }else{
+            await Avatar.deleteOne({_id:req.params.avatarID}).exec();
+            res.status(200).json({success: true, msg: `Avatar com ID ${req.params.avatarID} removido.`});
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message:
+                err.message || "Ocorreu um erro ao eliminar este missão."
+        });
+
+    }
+};

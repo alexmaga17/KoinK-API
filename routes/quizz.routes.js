@@ -1,5 +1,6 @@
 const express = require('express');
 const quizzController = require("../controllers/quizz.controller.js");
+const authController = require("../controllers/auth.controller.js");
 
 // express router
 let router = express.Router();
@@ -59,8 +60,8 @@ router.route('/')
 
 router.route('/:quizzID')
     .get(quizzController.findByID)
-    .put(quizzController.update)
-    .delete(quizzController.delete);
+    .put(authController.verifyToken, quizzController.update)
+    .delete(authController.verifyToken, quizzController.delete);
 
 router.all('*', function (req, res) {
     //send an predefined error message 

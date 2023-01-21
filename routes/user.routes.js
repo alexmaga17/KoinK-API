@@ -90,9 +90,33 @@ router.route('/:userID')
 
 router.route('/:userID/avatars/:avatarID')
     .put(authController.verifyToken, userController.buyAvatar);
-    
+
+/**
+ * @route PUT /users/password/{userID}
+ * @group Users
+ * @param {string} userID.path - userID
+ * @returns {object} 200 - An array of the user data
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 401 - Invalid Token
+ * @security Bearer
+  */     
+        
+
+
 router.route('password/:userID')
-    .put(authController.verifyToken, userController.updatePasword); 
+    .put(authController.verifyToken, userController.updatePasword);
+
+/**
+ * @route PUT /users/{userID}/boosters/{boosterID}
+ * @group Users
+ * @param {string} userID.path - userID
+ * @param {string} boosterID.path - boosterID
+ * @returns {object} 200 - An array of the user´s boosters
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 401 - Invalid Token
+ * @security Bearer
+  */     
+        
 
 router.route('/:userID/boosters/:boosterID')
     .put(authController.verifyToken, userController.buyBooster);  

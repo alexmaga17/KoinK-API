@@ -1,9 +1,9 @@
 const db = require("../models/index.js");
 const Mission = db.missions;
 
-//Create a new post
+
 exports.create = async (req, res) => {
-    // create a document (instance of model Post)
+
     const mission = new Mission({
         description:req.body.description,
         goal:req.body.goal,
@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     });
 
     try {
-        await mission.save(); // save Tutorial in the database
+        await mission.save();
         console.log(mission)
         res.status(201).json({ success: true, msg: "New mission created.", URL: `/missions/${mission._id}` });
     }
@@ -31,7 +31,6 @@ exports.create = async (req, res) => {
 
 };
 
-// Receber todos as categorias
 exports.findAll = async (req, res) => {
     const id = req.query.id;
 
@@ -51,11 +50,10 @@ exports.findAll = async (req, res) => {
     }
 };
 
-//Encontrar categoria por nome
 exports.findById = async (req, res) => {
     try {
         let data = await Mission
-            .find({ missin: req.params.id})
+            .find({ missin: req.params.missionID})
             .exec(); 
         res.status(200).json(data);
     }
@@ -68,12 +66,54 @@ exports.findById = async (req, res) => {
     }
 };
 
-// //Atualizar informação de categoria
-// exports.update = async (req, res) => {
-//     res.status(200).json({success: true, msg:'SUCESSO'});
-// };
+exports.update = async (req, res) => {
 
-// //Apagar uma categoria
-// exports.delete = async (req, res) => {
-//     res.status(200).json({success: true, msg:'SUCESSO'});
-// };
+    if (!req.body) {
+        res.status(400).json({ message: "O corpo da solicitação não pode estar vazio!" });
+        return;
+    }
+    try {
+        const mission = await Mission.findByIdAndUpdate(req.params.missionID, req.body,
+            {
+                returnOriginal: false,
+                runValidators: true,
+                useFindAndModify: false
+            }
+        ).exec();
+
+        if (!mission)
+            return res.status(404).json({
+                message: `Não é possível atualizar o usuário com id=${req.params.missionID}.`
+            });
+        res.status(200).json({
+            message: `Quizz com id=${req.params.missionID} foi atualizado com sucesso.`
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: `Erro ao atualizar o quizz com id=${req.params.missionID}.`
+        });
+    };
+};
+
+exports.delete = async (req, res) => {
+    try{
+        const mission =  await Mission.findById(req.params.missionID)
+        .exec();
+        if (mission === null){
+            return res.status(404).json({
+                success: false, msg: `Não foi encontrado nenhum quizz com o ID ${req.params.missionID}.`
+            });
+        
+        }else{
+            await Mission.deleteOne({_id:req.params.missionID}).exec();
+            res.status(200).json({success: true, msg: `Missão com ID ${req.params.missionID} removido.`});
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message:
+                err.message || "Ocorreu um erro ao eliminar este missão."
+        });
+
+    }
+};

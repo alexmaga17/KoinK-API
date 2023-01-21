@@ -9,7 +9,6 @@ const Booster =  db.boosters;
 
 //Create a new user
 exports.create = async (req, res) => {
-    // create a document (instance of model Tutorial)
     const user = new User({
         username: req.body.username,
         email: req.body.email,
@@ -71,7 +70,7 @@ exports.create = async (req, res) => {
 
 };
 
-// Receber todos os utilizadores
+// Return all users
 exports.findAll = async (req, res) => {
       try {
         let users = await User.find({})
@@ -86,17 +85,17 @@ exports.findAll = async (req, res) => {
     }
 };
 
-//Encontrar users por ID
+//Find users by ID
 exports.findByID = async (req, res) => {
     try {
         const user = await User.findById(req.params.userID)
             .exec();
-        // no data returned means there is no tutorial in DB with that given ID 
+       
         if (user === null)
             return res.status(404).json({
                 success: false, msg: `Cannot find any user with ID ${req.params.userID}.`
             });
-        // on success, send the tutorial data
+        
         res.json({ success: true, user: user });
     }
     catch (err) {
@@ -107,16 +106,15 @@ exports.findByID = async (req, res) => {
 };
 
 
-// Atualizar informação de algum utilizador
+//Update user info
 exports.update = async (req, res) => {
-    // validate request body data
 
     if (!req.body) {
         res.status(400).json({ message: "O corpo da solicitação não pode estar vazio!" });
         return;
     }
     if (req.loggedUserId !== req.params.userID) {
-        //console.log(req.loggedUserId);
+       
         return res.status(403).json({
             success: false, msg: "Esta solicitação está disponível apenas para o proprio utilizador"
         });
@@ -143,6 +141,8 @@ exports.update = async (req, res) => {
         });
     };
 }
+
+// update user password
 exports.updatePasword = async (req, res) => {
     try{
         const user = await User.findById(req.params.userID).exec();
@@ -170,7 +170,7 @@ exports.updatePasword = async (req, res) => {
     }
 };
 
-// Apagar um utilizador
+// Delete a user
 exports.delete = async (req, res) => {
     try{
         const user =  await User.findById(req.params.userID)
@@ -194,7 +194,7 @@ exports.delete = async (req, res) => {
     }
 };
 
-//Adicionar um avatar ao inventário
+//Buy an avatar
 exports.buyAvatar = async (req, res) => {
     try {
         if (req.loggedUserId !== req.params.userID) {
@@ -236,7 +236,7 @@ exports.buyAvatar = async (req, res) => {
     }
 };
 
-//Adicionar um booster ao inventário
+//Buy a booster
 exports.buyBooster = async (req, res) => {
     try {
         if (req.loggedUserId !== req.params.userID) {
@@ -277,7 +277,8 @@ exports.buyBooster = async (req, res) => {
         });
     }
 };
-//Fazer login
+
+//Login
 exports.login = async (req, res) => {
     try{
         if (!req.body || !req.body.username || !req.body.password)
